@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Special Surprise For Suchismita 💖 | From Snehashis</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter, Playfair Display & Great Vibes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Tone.js for Romantic Melody Box -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <!-- Canvas Confetti for Celebration Effects -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            handwriting: ['"Great Vibes"', 'cursive']
+          },
+          colors: {
+            rosepink: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337'
+            }
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-reverse': 'floatRev 7s ease-in-out infinite',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+            'petal-spin': 'spinSlow 18s linear infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-14px) rotate(3deg)' }
+            },
+            floatRev: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-16px) rotate(-3deg)' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+              '50%': { opacity: '1', transform: 'scale(1.03)' }
+            },
+            spinSlow: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Romantic Glows and Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(254, 205, 211, 0.7);
+    }
+    .glass-card-darker {
+      background: rgba(255, 241, 242, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(251, 113, 133, 0.4);
+    }
+    .glow-rose {
+      box-shadow: 0 0 35px -5px rgba(244, 63, 94, 0.35);
+    }
+    .text-glow {
+      text-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+    }
+
+    /* 3D Rose Box Simulation Styles */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .preserve-3d {
+      transform-style: preserve-3d;
+    }
+
+    /* Floating Petal Ambient Canvas */
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* Rose blooming animation stages */
+    .petal-layer {
+      transform-origin: bottom center;
+      transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .box-lid {
+      transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.8s ease;
+      transform-origin: top center;
+    }
+    .lid-opened {
+      transform: translateY(-90px) rotateX(110deg) rotateZ(-12deg);
+      opacity: 0.15;
+    }
+    .rose-stem-rise {
+      transform: translateY(-35px) scale(1.15) !important;
+    }
+
+    /* Custom Scrollbar for Smooth Reading */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #ffe4e6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fb7185;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #f43f5e;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-rosepink-50 via-pink-50/70 to-rosepink-100/60 text-slate-800 font-sans antialiased min-h-screen relative overflow-x-hidden selection:bg-rosepink-200 selection:text-rosepink-900">
+
+  <!-- Ambient Floating Heart Petals Canvas -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- Audio Chime / Ambient Music Controller Floating Button -->
+  <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+    <div id="audio-tooltip" class="glass-card text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg text-rosepink-700 hidden md:block transition-opacity opacity-90 animate-pulse">
+      🎵 Tap for romantic melody
+    </div>
+    <button id="music-btn" onclick="toggleRomanticMusic()" class="w-14 h-14 rounded-full bg-gradient-to-tr from-rosepink-600 to-rosepink-400 text-white shadow-xl flex items-center justify-center text-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/80 glow-rose" title="Play romantic music box">
+      <span id="music-icon">🎶</span>
+    </button>
+  </div>
+
+  <section class="relative min-h-[90vh] flex flex-col items-center justify-center px-4 text-center pt-16 pb-12">
+    <!-- Dedicated Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-rosepink-200 text-rosepink-600 text-xs tracking-wider uppercase font-semibold mb-6 shadow-sm animate-pulse-subtle">
+      <span class="w-2 h-2 rounded-full bg-rosepink-500 animate-ping"></span>
+      Crafted with pure love & devotion by Snehashis
+    </div>
+
+    <!-- Main Heading with Glowing Calligraphy -->
+    <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-slate-900 tracking-tight leading-tight max-w-4xl">
+      For the One Who Holds <br class="hidden sm:inline" />
+      <span class="font-handwriting text-5xl sm:text-7xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-rosepink-600 via-rosepink-500 to-pink-500 text-glow">
+        My Entire Heart,
+      </span>
+      <span class="block font-handwriting text-4xl sm:text-6xl md:text-7xl text-rosepink-700 mt-3 font-normal">
+        My Dearest Suchismita ✨
+      </span>
+    </h1>
+
+    <p class="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl font-light leading-relaxed">
+      Suchismita, you light up my dullest days and make my entire world blossom in colors I never knew existed. I built this secret universe just to bring a warm smile to your gorgeous face.
+    </p>
+
+    <!-- Call to Action Anchors -->
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4 z-10">
+      <a href="#rose-surprise" class="px-7 py-3.5 rounded-full bg-gradient-to-r from-rosepink-600 to-rosepink-500 text-white font-semibold text-sm sm:text-base shadow-lg shadow-rosepink-500/30 hover:shadow-rosepink-500/50 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+        <span>Open Your Surprise Rose</span>
+        <span>🌹</span>
+      </a>
+      <a href="#mini-games" class="px-7 py-3.5 rounded-full glass-card text-rosepink-700 hover:bg-rosepink-100 font-semibold text-sm sm:text-base border border-rosepink-300/80 shadow-md hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+        <span>Play Our Fun Love Games</span>
+        <span>✨</span>
+      </a>
+    </div>
+
+    <!-- Gentle Scroll Indicator -->
+    <div class="mt-12 text-rosepink-400 animate-bounce flex flex-col items-center text-xs font-medium">
+      <span>Scroll for sweet surprises</span>
+      <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </section>
+
+  <section id="rose-surprise" class="py-16 px-4 max-w-4xl mx-auto relative z-10">
+    <div class="text-center mb-8">
+      <span class="text-xs uppercase tracking-widest text-rosepink-500 font-bold bg-rosepink-100/80 px-3 py-1 rounded-full">Interactive Keepsake</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mt-3">The Rose That Never Fades</h2>
+      <p class="text-slate-600 text-sm sm:text-base mt-2">Tap the velvet gift box below to unveil what blossoms inside for you, Suchismita...</p>
+    </div>
+
+    <!-- 3D Box & Rose Interactive Stage -->
+    <div class="relative flex flex-col items-center justify-center min-h-[460px] sm:min-h-[520px]">
+      
+      <!-- Interactive Clickable Gift Box Container -->
+      <div id="gift-box-wrapper" onclick="triggerRoseBloom()" class="cursor-pointer group relative perspective-1000 select-none z-30 transition-transform duration-300 hover:scale-105 active:scale-95">
+        
+        <!-- Hover Hint -->
+        <div id="box-instruction" class="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900/80 text-white text-xs py-1.5 px-4 rounded-full shadow-lg whitespace-nowrap animate-bounce pointer-events-none">
+          ✨ Tap to open your gift ✨
+        </div>
+
+        <!-- The Gift Box Construction -->
+        <div class="w-44 h-44 sm:w-56 sm:h-56 relative">
+          
+          <!-- Box Base -->
+          <div class="absolute inset-x-2 bottom-0 h-32 sm:h-40 rounded-2xl bg-gradient-to-b from-rosepink-700 via-rosepink-800 to-rosepink-950 shadow-2xl border-t-2 border-rosepink-500 flex items-center justify-center overflow-hidden">
+            <!-- Ribbon Vertical -->
+            <div class="w-8 h-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 shadow-md"></div>
+            <!-- Ribbon Horizontal -->
+            <div class="absolute inset-y-1/2 -translate-y-1/2 w-full h-8 bg-gradient-to-b from-amber-300 via-yellow-200 to-amber-400 shadow-md"></div>
+            <!-- Golden Wax Seal Tag -->
+            <div class="absolute bottom-3 right-3 bg-gradient-to-tr from-amber-500 to-yellow-300 text-rosepink-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">
+              To: Suchismita
+            </div>
+          </div>
+
+          <!-- Box Lid (Flips and floats off on click) -->
+          <div id="box-lid" class="box-lid absolute inset-x-0 top-6 sm:top-10 h-14 sm:h-16 rounded-xl bg-gradient-to-r from-rosepink-600 via-rosepink-700 to-rosepink-800 shadow-2xl border-b-2 border-rosepink-900 z-20 flex items-center justify-center">
+            <!-- Lid Ribbon -->
+            <div class="w-8 h-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 shadow-sm"></div>
+            <!-- Ribbon Bow on Top -->
+            <div class="absolute -top-5 w-12 h-8 flex items-center justify-center">
+              <div class="w-5 h-5 rounded-full border-4 border-amber-300 -mr-1"></div>
+              <div class="w-5 h-5 rounded-full border-4 border-amber-300 -ml-1"></div>
+            </div>
+          </div>
+
+          <!-- The Hidden Rose (Emerged and blooms upward) -->
+          <div id="rose-container" class="absolute inset-x-0 bottom-12 flex flex-col items-center justify-center transition-all duration-1000 transform translate-y-12 scale-50 opacity-0 pointer-events-none z-10">
+            
+            <!-- SVG Lush Rose Blossom -->
+            <div class="relative w-36 h-36 sm:w-44 sm:h-44">
+              <!-- Animated Glowing Aura -->
+              <div class="absolute inset-0 rounded-full bg-rosepink-500/20 blur-xl animate-ping"></div>
+
+              <!-- Rose Petals Group -->
+              <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-2xl overflow-visible">
+                <defs>
+                  <radialGradient id="roseGradDeep" cx="50%" cy="45%" r="55%">
+                    <stop offset="0%" stop-color="#fb7185" />
+                    <stop offset="45%" stop-color="#e11d48" />
+                    <stop offset="90%" stop-color="#9f1239" />
+                    <stop offset="100%" stop-color="#4c0519" />
+                  </radialGradient>
+                  <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#15803d" />
+                    <stop offset="50%" stop-color="#22c55e" />
+                    <stop offset="100%" stop-color="#166534" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Rose Stem -->
+                <path d="M100 130 Q105 165 98 200" stroke="url(#stemGrad)" stroke-width="6" fill="none" stroke-linecap="round" />
+                
+                <!-- Leaves with dewdrop sparkles -->
+                <path d="M100 155 Q75 145 65 160 Q85 170 100 162" fill="#16a34a" opacity="0.9" />
+                <path d="M100 170 Q125 160 138 175 Q115 185 100 176" fill="#15803d" opacity="0.9" />
+                <circle cx="75" cy="153" r="2" fill="#ffffff" opacity="0.8" />
+
+                <!-- Outer Petals Layer 1 (Spreads wide) -->
+                <path id="petal-outer-1" class="petal-layer" d="M100 135 C60 135 40 90 70 65 C85 50 115 50 130 65 C160 90 140 135 100 135 Z" fill="url(#roseGradDeep)" />
+                
+                <!-- Petals Layer 2 (Rotated) -->
+                <path id="petal-outer-2" class="petal-layer" d="M100 135 C50 115 50 65 85 55 C100 50 115 50 135 60 C155 75 150 120 100 135 Z" fill="#e11d48" opacity="0.95" />
+
+                <!-- Intermediate Petal Swirls -->
+                <path d="M100 130 C70 120 65 80 90 70 C110 60 135 75 130 105 C125 125 110 130 100 130 Z" fill="#be123c" />
+                <path d="M100 125 C80 120 78 90 95 80 C110 75 125 85 120 105 C115 120 108 125 100 125 Z" fill="#f43f5e" />
+
+                <!-- Inner Rose Heart (Soft Bud center) -->
+                <circle cx="100" cy="94" r="14" fill="#fb7185" />
+                <path d="M96 90 Q100 84 104 90 Q108 96 100 100 Q94 96 96 90 Z" fill="#ffe4e6" />
+                
+                <!-- Tiny Sparkling Dewdrops on Rose -->
+                <circle cx="92" cy="78" r="2.5" fill="#ffffff" opacity="0.9" />
+                <circle cx="118" cy="88" r="2" fill="#ffffff" opacity="0.9" />
+              </svg>
+
+              <!-- Floating Sparkle Stars -->
+              <span class="absolute -top-2 left-2 text-yellow-300 text-lg animate-ping">✨</span>
+              <span class="absolute top-8 -right-3 text-pink-300 text-sm animate-bounce">💖</span>
+            </div>
+
+            <div class="text-xs font-semibold text-rosepink-700 bg-white/90 px-3 py-1 rounded-full shadow-sm mt-1 border border-rosepink-200">
+              For Suchismita 🌹
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="love-scroll" class="mt-8 w-full max-w-xl glass-card rounded-3xl p-6 sm:p-8 shadow-2xl border border-rosepink-300 transform transition-all duration-700 opacity-0 translate-y-6 pointer-events-none">
+        
+        <div class="flex items-center justify-between border-b border-rosepink-200/80 pb-3 mb-5">
+          <div class="flex items-center gap-2">
+            <span class="text-rosepink-500 text-2xl">💌</span>
+            <div>
+              <h3 class="font-serif font-bold text-slate-800 text-lg">My Letter to Suchismita</h3>
+              <p class="text-[11px] text-rosepink-500 font-medium">Written straight from the heart</p>
+            </div>
+          </div>
+          <span class="text-xs text-rosepink-500 bg-rosepink-50 px-3 py-1 rounded-full font-semibold border border-rosepink-200">Forever & Always</span>
+        </div>
+
+        <!-- The Beautiful Dedicated Love Letter -->
+        <div class="space-y-4 text-slate-700 leading-relaxed font-serif text-base sm:text-lg">
+          <p class="font-handwriting text-2xl sm:text-3xl text-rosepink-700 font-normal">
+            Dearest Suchismita,
+          </p>
+          <p>
+            From the moment your laughter first warmed my soul, every ordinary second turned into sheer poetry. In a crowded, noisy world, your gentle voice is my favorite melody, your radiant smile is my sunrise, and your hand held softly in mine is the only peace I will ever need.
+          </p>
+          <p>
+            You have a way of filling quiet moments with warmth, turning ordinary days into celebrations of love. Thank you for being my anchor when the winds blow cold, my confidante in every secret dream, and my greatest blessing under these skies.
+          </p>
+          <p>
+            Like this rose that never wilts, my promise to you is unwavering. In every quiet morning, through every starry twilight, and in every lifetime God could ever give me — <em>I will always choose you, Suchismita.</em>
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-rosepink-200 flex flex-wrap items-center justify-between gap-3">
+          <span class="font-serif text-sm sm:text-base font-bold text-rosepink-700">
+            With all my love & devotion, <br />
+            <span class="font-handwriting text-2xl sm:text-3xl text-rosepink-600 font-normal">Snehashis ❤️</span>
+          </span>
+          <button onclick="triggerPetalShower()" class="text-xs sm:text-sm bg-rosepink-100 hover:bg-rosepink-200 text-rosepink-700 font-semibold px-4 py-2 rounded-full border border-rosepink-300 transition duration-200 flex items-center gap-1.5 shadow-sm">
+            <span>Shower More Petals</span>
+            <span>🌸</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="mini-games" class="py-16 px-4 max-w-5xl mx-auto relative z-10">
+    <div class="text-center mb-12">
+      <span class="text-xs uppercase tracking-widest text-rosepink-500 font-bold bg-rosepink-100/80 px-3 py-1 rounded-full">Fun & Warmth</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mt-3">Interactive Love Station</h2>
+      <p class="text-slate-600 text-sm sm:text-base mt-2">A few little games and surprises made solely to make your heart smile</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- ITEM 1: "Catch My Love" Mini Arcade Game -->
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-rosepink-200 flex flex-col items-center">
+        <div class="w-full flex items-center justify-between pb-3 border-b border-rosepink-100">
+          <h3 class="font-serif font-bold text-slate-800 text-lg flex items-center gap-2">
+            <span>💌</span> Catch Snehashis's Hearts!
+          </h3>
+          <span id="game-timer" class="text-xs font-bold text-rosepink-600 bg-rosepink-50 px-2.5 py-1 rounded-full border border-rosepink-200">Time: 20s</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-2 text-left w-full">Move the velvet basket with your mouse or finger to catch falling hearts & love letters!</p>
+        
+        <!-- Game Canvas Stage -->
+        <div class="relative w-full mt-4 bg-gradient-to-b from-rosepink-100/50 to-pink-50 rounded-2xl overflow-hidden border border-rosepink-200 h-64 flex items-center justify-center">
+          <canvas id="game-canvas" class="w-full h-full block cursor-none"></canvas>
+          
+          <!-- Game Start / Game Over Overlay -->
+          <div id="game-overlay" class="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center z-10">
+            <span class="text-4xl mb-1">🧺💖</span>
+            <h4 id="game-overlay-title" class="font-serif font-bold text-slate-800 text-lg">Ready, Suchismita?</h4>
+            <p id="game-overlay-desc" class="text-xs text-slate-600 mt-1 max-w-xs">Catch as many hearts as you can before the timer runs out!</p>
+            <button onclick="startGame()" class="mt-4 px-6 py-2 rounded-full bg-rosepink-600 hover:bg-rosepink-700 text-white font-semibold text-xs shadow-md transition transform active:scale-95">
+              Start Game 🚀
+            </button>
+          </div>
+        </div>
+
+        <div class="w-full flex items-center justify-between mt-3 text-xs font-medium text-slate-600">
+          <div>Score: <span id="game-score" class="font-bold text-rosepink-600 text-sm">0</span> hearts</div>
+          <div class="text-[11px] text-rosepink-400">Drag or move mouse horizontally</div>
+        </div>
+      </div>
+
+      <!-- ITEM 2: Scratch-Off Secret Romantic Date Ticket -->
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-rosepink-200 flex flex-col items-center justify-between">
+        <div class="w-full flex items-center justify-between pb-3 border-b border-rosepink-100">
+          <h3 class="font-serif font-bold text-slate-800 text-lg flex items-center gap-2">
+            <span>🎟️</span> Secret Date Night Ticket
+          </h3>
+          <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">VIP Pass</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-2 text-left w-full">Scratch off the silver card below with your mouse or touch to reveal your special coupon!</p>
+
+        <!-- Scratch Area Container -->
+        <div class="relative w-full max-w-sm h-48 mt-4 rounded-2xl overflow-hidden shadow-inner border-2 border-dashed border-rosepink-300 flex items-center justify-center select-none">
+          <!-- Hidden Underlying Reward -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-rosepink-500 to-pink-500 text-white p-5 flex flex-col items-center justify-center text-center">
+            <span class="text-3xl">🕯️✨🍷</span>
+            <h4 class="font-serif font-bold text-lg text-white mt-1">One Romantic Candlelight Evening</h4>
+            <p class="text-xs text-rosepink-100 mt-1">Good for your favorite cuisine, endless warm cuddles, slow dances, and whatever Suchismita desires.</p>
+            <div class="mt-2 text-[10px] uppercase font-bold tracking-widest bg-white/20 px-3 py-1 rounded-full">
+              Non-Expiring • Signed by Snehashis
+            </div>
+          </div>
+
+          <!-- Scratch Canvas (Silver Covering) -->
+          <canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-crosshair z-10"></canvas>
+        </div>
+
+        <div class="w-full flex items-center justify-between mt-3 text-xs">
+          <button onclick="resetScratchCard()" class="text-rosepink-600 hover:text-rosepink-800 font-semibold underline">Reset Card</button>
+          <span id="scratch-percent" class="text-slate-400 text-[11px]">Scratch to reveal</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+      
+      <!-- ITEM 3: "Reasons Why Snehashis Loves You" Jar -->
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-rosepink-200 flex flex-col justify-between text-center">
+        <div>
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="text-2xl">🍯</span>
+            <h3 class="font-serif font-bold text-slate-800 text-lg">Suchismita's Love Capsule Jar</h3>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Click below whenever you need a sweet reminder of why you are so cherished.</p>
+          
+          <div class="min-h-[110px] flex items-center justify-center p-4 rounded-2xl bg-rosepink-50/70 border border-rosepink-200/60 transition-all duration-300">
+            <p id="capsule-text" class="font-serif italic text-rosepink-800 text-sm sm:text-base leading-relaxed">
+              "The way your eyes light up with pure joy whenever you laugh — it is my single favorite sight in this whole world."
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button onclick="pullLoveCapsule()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-rosepink-600 to-rosepink-500 text-white font-semibold text-xs shadow hover:scale-105 active:scale-95 transition">
+            Pick Another Reason 💖
+          </button>
+        </div>
+      </div>
+
+      <!-- ITEM 4: Virtual Hug Battery Station -->
+      <div class="glass-card rounded-3xl p-6 shadow-xl border border-rosepink-200 flex flex-col justify-between text-center">
+        <div>
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="text-2xl">🫂⚡</span>
+            <h3 class="font-serif font-bold text-slate-800 text-lg">Virtual Hug Recharge Station</h3>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Press & hold the hug button to fill your battery with Snehashis's warmest embrace!</p>
+          
+          <!-- Battery Gauge -->
+          <div class="w-full bg-rosepink-100 rounded-full h-8 p-1 border border-rosepink-300 relative overflow-hidden flex items-center">
+            <div id="hug-bar" class="h-full bg-gradient-to-r from-rosepink-500 via-pink-500 to-rosepink-600 rounded-full transition-all duration-150 flex items-center justify-end pr-2" style="width: 25%;">
+              <span class="text-[10px] font-bold text-white whitespace-nowrap">💖</span>
+            </div>
+            <span id="hug-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold text-rosepink-800">
+              Hug Level: 25%
+            </span>
+          </div>
+
+          <p id="hug-message" class="text-xs text-rosepink-600 font-medium mt-3 italic min-h-[20px]">
+            Hold down to send a long, tight hug...
+          </p>
+        </div>
+
+        <div class="mt-4 flex items-center justify-center">
+          <button id="hug-btn" onmousedown="startHugCharge()" onmouseup="stopHugCharge()" onmouseleave="stopHugCharge()" ontouchstart="startHugCharge(event)" ontouchend="stopHugCharge()" class="px-6 py-2.5 rounded-full bg-rosepink-500 hover:bg-rosepink-600 text-white font-semibold text-xs shadow-lg hover:scale-105 active:scale-95 transition select-none flex items-center gap-2">
+            <span>Press & Hold for Warm Hug</span>
+            <span>🤗</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="py-16 px-4 max-w-2xl mx-auto text-center relative z-10">
+    <div class="glass-card rounded-3xl p-8 sm:p-10 shadow-2xl border-2 border-rosepink-300 relative overflow-hidden">
+      <!-- Decorative Backdrop Circles -->
+      <div class="absolute -right-12 -bottom-12 w-40 h-40 rounded-full bg-rosepink-200/40 blur-2xl pointer-events-none"></div>
+      <div class="absolute -left-12 -top-12 w-40 h-40 rounded-full bg-pink-200/40 blur-2xl pointer-events-none"></div>
+
+      <span class="text-4xl animate-bounce inline-block">💍✨</span>
+      <h2 class="font-serif text-2xl sm:text-4xl font-bold text-slate-900 mt-3 leading-snug">
+        Suchismita, Will You Be Snehashis's Forever & Always?
+      </h2>
+      <p class="text-slate-600 text-xs sm:text-sm mt-3 max-w-md mx-auto">
+        (Note: The universe and all physical laws only recognize one correct answer here 😉)
+      </p>
+
+      <!-- Proposal Buttons Arena -->
+      <div id="proposal-arena" class="relative mt-8 min-h-[120px] flex flex-wrap items-center justify-center gap-6">
+        
+        <!-- YES Button: Triggers grand fireworks & celebration -->
+        <button onclick="handleProposalYes()" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-rosepink-600 via-rosepink-500 to-pink-500 text-white font-bold text-sm sm:text-base shadow-xl shadow-rosepink-500/30 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center gap-2">
+          <span>YES! A thousand times yes, Snehashis!</span>
+          <span>💖</span>
+        </button>
+
+        <!-- NO Button: Playfully runs away from cursor or finger -->
+        <button id="elusive-no-btn" onmouseenter="runAwayButton(this)" ontouchstart="runAwayButton(this)" class="px-6 py-3.5 rounded-full bg-slate-200 text-slate-600 font-semibold text-sm transition-all duration-200 cursor-pointer shadow-sm">
+          No 🙈
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-12 text-center text-xs text-slate-500 border-t border-rosepink-200/60 mt-12 relative z-10 bg-white/40 backdrop-blur-sm">
+    <div class="max-w-md mx-auto px-4">
+      <p class="flex items-center justify-center gap-1.5 text-sm">
+        Made with infinite adoration for <span class="text-rosepink-600 font-bold">Suchismita</span> by Snehashis
+      </p>
+      <p class="mt-2 text-xs text-slate-400">
+        Today, tomorrow, and every chapter our hearts write together. 🌹
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    let synth = null;
+    let melodyLoop = null;
+    let isMusicPlaying = false;
+
+    // Romantic Music Box Melody notes (Chime style)
+    const romanticNotes = [
+      { note: 'E4', dur: '4n' },
+      { note: 'G4', dur: '4n' },
+      { note: 'B4', dur: '4n' },
+      { note: 'E5', dur: '2n' },
+      { note: 'D5', dur: '4n' },
+      { note: 'B4', dur: '4n' },
+      { note: 'A4', dur: '2n' },
+      { note: 'G4', dur: '4n' },
+      { note: 'A4', dur: '4n' },
+      { note: 'C5', dur: '2n' },
+      { note: 'B4', dur: '2n' },
+      { note: 'G4', dur: '1n' }
+    ];
+
+    async function initAudio() {
+      if (!synth && window.Tone) {
+        await Tone.start();
+        synth = new Tone.PolySynth(Tone.Synth, {
+          oscillator: { type: 'sine' },
+          envelope: { attack: 0.05, decay: 0.8, sustain: 0.2, release: 1.4 }
+        }).toDestination();
+        synth.volume.value = -8;
+      }
+    }
+
+    async function toggleRomanticMusic() {
+      await initAudio();
+      const btn = document.getElementById('music-btn');
+      const icon = document.getElementById('music-icon');
+      const tooltip = document.getElementById('audio-tooltip');
+
+      if (!isMusicPlaying) {
+        let noteIndex = 0;
+        Tone.Transport.cancel();
+        melodyLoop = new Tone.Loop((time) => {
+          const item = romanticNotes[noteIndex % romanticNotes.length];
+          synth.triggerAttackRelease(item.note, item.dur, time);
+          noteIndex++;
+        }, '2n').start(0);
+
+        Tone.Transport.bpm.value = 76;
+        Tone.Transport.start();
+
+        isMusicPlaying = true;
+        icon.textContent = '⏸️';
+        btn.classList.add('ring-4', 'ring-rosepink-300');
+        if (tooltip) tooltip.textContent = '🎵 Music box playing...';
+      } else {
+        Tone.Transport.stop();
+        Tone.Transport.cancel();
+        isMusicPlaying = false;
+        icon.textContent = '🎶';
+        btn.classList.remove('ring-4', 'ring-rosepink-300');
+        if (tooltip) tooltip.textContent = '🎵 Tap for romantic melody';
+      }
+    }
+
+    function playLittleChime() {
+      if (synth) {
+        synth.triggerAttackRelease(['G5', 'B5', 'D6'], '8n');
+      }
+    }
+  </script>
+
+  <script>
+    let isRoseBloomed = false;
+
+    function triggerRoseBloom() {
+      if (isRoseBloomed) return;
+      isRoseBloomed = true;
+
+      // Pop open the box lid
+      const lid = document.getElementById('box-lid');
+      const roseContainer = document.getElementById('rose-container');
+      const loveScroll = document.getElementById('love-scroll');
+      const instruction = document.getElementById('box-instruction');
+
+      if (instruction) {
+        instruction.style.display = 'none';
+      }
+
+      if (lid) {
+        lid.classList.add('lid-opened');
+      }
+
+      // Rise and blossom the rose
+      setTimeout(() => {
+        if (roseContainer) {
+          roseContainer.classList.remove('opacity-0', 'translate-y-12', 'scale-50');
+          roseContainer.classList.add('opacity-100', 'rose-stem-rise');
+        }
+        triggerRoseConfetti();
+        playLittleChime();
+      }, 400);
+
+      // Unfold the heartfelt Love Scroll
+      setTimeout(() => {
+        if (loveScroll) {
+          loveScroll.classList.remove('opacity-0', 'translate-y-6', 'pointer-events-none');
+          loveScroll.classList.add('opacity-100', 'translate-y-0');
+        }
+      }, 900);
+    }
+
+    function triggerRoseConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#f43f5e', '#fb7185', '#fda4af', '#fef08a', '#e11d48']
+        });
+      }
+    }
+
+    function triggerPetalShower() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { y: 0.4 },
+          colors: ['#fb7185', '#f43f5e', '#ffe4e6', '#e11d48']
+        });
+      }
+      playLittleChime();
+    }
+  </script>
+
+  <script>
+    function runAwayButton(btn) {
+      const arena = document.getElementById('proposal-arena');
+      if (!arena) return;
+
+      const rect = arena.getBoundingClientRect();
+      const maxX = rect.width - btn.offsetWidth - 20;
+      const maxY = rect.height - btn.offsetHeight - 20;
+
+      const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+      btn.style.position = 'absolute';
+      btn.style.left = randomX + 'px';
+      btn.style.top = randomY + 'px';
+
+      // Playful teasing labels
+      const teaseWords = ['Try again 😜', 'Nice try! 💕', 'Still no? 🙈', 'Nope! 🥰', 'Snehashis loves you!'];
+      btn.textContent = teaseWords[Math.floor(Math.random() * teaseWords.length)];
+    }
+
+    function handleProposalYes() {
+      const noBtn = document.getElementById('elusive-no-btn');
+      if (noBtn) noBtn.style.display = 'none';
+
+      // Grand celebration fireworks
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 160,
+          spread: 120,
+          origin: { y: 0.5 },
+          colors: ['#e11d48', '#fb7185', '#ffe4e6', '#f59e0b', '#ec4899']
+        });
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 120,
+            angle: 60,
+            spread: 60,
+            origin: { x: 0 }
+          });
+          confetti({
+            particleCount: 120,
+            angle: 120,
+            spread: 60,
+            origin: { x: 1 }
+          });
+        }, 300);
+      }
+
+      if (synth) {
+        synth.triggerAttackRelease(['C5', 'E5', 'G5', 'C6'], '2n');
+      }
+
+      const arena = document.getElementById('proposal-arena');
+      if (arena) {
+        arena.innerHTML = `
+          <div class="glass-card bg-rosepink-500 text-white px-8 py-5 rounded-3xl shadow-xl animate-bounce border-2 border-white/80 max-w-md mx-auto">
+            <h3 class="font-serif text-2xl font-bold">Snehashis & Suchismita Forever! 💍🥰</h3>
+            <p class="text-xs text-rosepink-100 mt-2 leading-relaxed">
+              The happiest choice in the universe! I love you more than words could ever tell, my darling Suchismita.
+            </p>
+          </div>
+        `;
+      }
+    }
+  </script>
+
+  <script>
+    let scratchCanvas, scratchCtx;
+    let isScratching = false;
+
+    function initScratchCard() {
+      scratchCanvas = document.getElementById('scratch-canvas');
+      if (!scratchCanvas) return;
+      scratchCtx = scratchCanvas.getContext('2d');
+
+      const rect = scratchCanvas.parentElement.getBoundingClientRect();
+      scratchCanvas.width = rect.width;
+      scratchCanvas.height = rect.height;
+
+      // Draw shiny silver scratch-off layer
+      scratchCtx.fillStyle = '#cbd5e1';
+      scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+      // Add silver shimmer texture & prompt
+      scratchCtx.fillStyle = '#94a3b8';
+      scratchCtx.font = 'bold 15px "Playfair Display", serif';
+      scratchCtx.textAlign = 'center';
+      scratchCtx.fillText('✨ Scratch to Reveal Your Date ✨', scratchCanvas.width / 2, scratchCanvas.height / 2 - 5);
+
+      scratchCtx.font = '12px "Inter", sans-serif';
+      scratchCtx.fillStyle = '#64748b';
+      scratchCtx.fillText('Use cursor or touch', scratchCanvas.width / 2, scratchCanvas.height / 2 + 18);
+
+      // Scratching interactions
+      scratchCanvas.addEventListener('mousedown', () => { isScratching = true; });
+      window.addEventListener('mouseup', () => { isScratching = false; });
+      scratchCanvas.addEventListener('mousemove', scratch);
+
+      scratchCanvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
+      window.addEventListener('touchend', () => { isScratching = false; });
+      scratchCanvas.addEventListener('touchmove', scratch);
+    }
+
+    function scratch(e) {
+      if (!isScratching || !scratchCtx) return;
+      const rect = scratchCanvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      scratchCtx.globalCompositeOperation = 'destination-out';
+      scratchCtx.beginPath();
+      scratchCtx.arc(x, y, 22, 0, Math.PI * 2, false);
+      scratchCtx.fill();
+    }
+
+    function resetScratchCard() {
+      initScratchCard();
+    }
+  </script>
+
+  <script>
+    let gameCanvas, gameCtx;
+    let gameScore = 0;
+    let gameTimeLeft = 20;
+    let gameInterval = null;
+    let animationFrameId = null;
+    let isGameRunning = false;
+
+    const basket = { x: 120, y: 210, width: 65, height: 26 };
+    let gameHearts = [];
+
+    function initGameCanvas() {
+      gameCanvas = document.getElementById('game-canvas');
+      if (!gameCanvas) return;
+      gameCtx = gameCanvas.getContext('2d');
+
+      const rect = gameCanvas.parentElement.getBoundingClientRect();
+      gameCanvas.width = rect.width;
+      gameCanvas.height = rect.height;
+      basket.y = gameCanvas.height - 35;
+      basket.x = (gameCanvas.width - basket.width) / 2;
+
+      // Mouse and touch tracking for basket movement
+      gameCanvas.addEventListener('mousemove', (e) => {
+        const bounds = gameCanvas.getBoundingClientRect();
+        basket.x = e.clientX - bounds.left - (basket.width / 2);
+      });
+
+      gameCanvas.addEventListener('touchmove', (e) => {
+        if (!e.touches[0]) return;
+        const bounds = gameCanvas.getBoundingClientRect();
+        basket.x = e.touches[0].clientX - bounds.left - (basket.width / 2);
+      });
+    }
+
+    function startGame() {
+      const overlay = document.getElementById('game-overlay');
+      if (overlay) overlay.style.display = 'none';
+
+      gameScore = 0;
+      gameTimeLeft = 20;
+      gameHearts = [];
+      isGameRunning = true;
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-timer').textContent = `Time: ${gameTimeLeft}s`;
+
+      if (gameInterval) clearInterval(gameInterval);
+      gameInterval = setInterval(() => {
+        gameTimeLeft--;
+        document.getElementById('game-timer').textContent = `Time: ${gameTimeLeft}s`;
+        if (gameTimeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+
+      runGameLoop();
+    }
+
+    function endGame() {
+      isGameRunning = false;
+      clearInterval(gameInterval);
+      cancelAnimationFrame(animationFrameId);
+
+      const overlay = document.getElementById('game-overlay');
+      const title = document.getElementById('game-overlay-title');
+      const desc = document.getElementById('game-overlay-desc');
+      if (overlay && title && desc) {
+        overlay.style.display = 'flex';
+        title.textContent = `Magnificent, Suchismita! 🎉`;
+        desc.textContent = `You caught ${gameScore} hearts! Snehashis's love for you is overflowing.`;
+        triggerRoseConfetti();
+      }
+    }
+
+    function runGameLoop() {
+      if (!isGameRunning) return;
+
+      // Spawn falling hearts or envelopes
+      if (Math.random() < 0.06) {
+        gameHearts.push({
+          x: Math.random() * (gameCanvas.width - 25),
+          y: -15,
+          speed: 2 + Math.random() * 2.5,
+          char: Math.random() > 0.3 ? '💖' : '💌',
+          size: 20
+        });
+      }
+
+      gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      // Keep basket inside canvas boundaries
+      if (basket.x < 5) basket.x = 5;
+      if (basket.x > gameCanvas.width - basket.width - 5) basket.x = gameCanvas.width - basket.width - 5;
+
+      // Draw Velvet Basket
+      gameCtx.fillStyle = '#e11d48';
+      gameCtx.beginPath();
+      gameCtx.roundRect(basket.x, basket.y, basket.width, basket.height, [6, 6, 14, 14]);
+      gameCtx.fill();
+
+      // Basket Ribbon Detail
+      gameCtx.fillStyle = '#fde047';
+      gameCtx.fillRect(basket.x, basket.y + 7, basket.width, 4);
+
+      // Draw and Update Falling Hearts
+      for (let i = gameHearts.length - 1; i >= 0; i--) {
+        const item = gameHearts[i];
+        item.y += item.speed;
+
+        gameCtx.font = `${item.size}px serif`;
+        gameCtx.fillText(item.char, item.x, item.y);
+
+        // Catch Collision Detection
+        if (
+          item.y >= basket.y &&
+          item.y <= basket.y + basket.height + 10 &&
+          item.x + item.size >= basket.x &&
+          item.x <= basket.x + basket.width
+        ) {
+          gameHearts.splice(i, 1);
+          gameScore++;
+          document.getElementById('game-score').textContent = gameScore;
+          continue;
+        }
+
+        // Out of bounds cleanup
+        if (item.y > gameCanvas.height + 25) {
+          gameHearts.splice(i, 1);
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(runGameLoop);
+    }
+  </script>
+
+  <script>
+    const loveReasons = [
+      "The way your eyes light up with pure joy whenever you laugh — it is my single favorite sight in this world.",
+      "How your warmth and sweetness make even the hardest days feel soft, peaceful, and full of hope.",
+      "The comfort of hearing your voice telling me about your day, making every second sweeter.",
+      "Your radiant beauty, both outside and in the kindness you carry inside your heart.",
+      "The way you make Snehashis feel like the most fortunate guy alive, simply by being you, Suchismita.",
+      "Because in every quiet morning and starry evening, my heart naturally searches for you."
+    ];
+    let reasonIndex = 0;
+
+    function pullLoveCapsule() {
+      reasonIndex = (reasonIndex + 1) % loveReasons.length;
+      const textElem = document.getElementById('capsule-text');
+      if (textElem) {
+        textElem.style.opacity = '0';
+        setTimeout(() => {
+          textElem.textContent = `"${loveReasons[reasonIndex]}"`;
+          textElem.style.opacity = '1';
+        }, 200);
+      }
+      playLittleChime();
+    }
+
+    /* Virtual Hug Charge Logic */
+    let hugCharge = 25;
+    let hugInterval = null;
+
+    function startHugCharge(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (hugInterval) clearInterval(hugInterval);
+
+      hugInterval = setInterval(() => {
+        if (hugCharge < 100) {
+          hugCharge += 4;
+          updateHugUI();
+        } else {
+          clearInterval(hugInterval);
+          document.getElementById('hug-message').textContent = "Maximum Hug Warmth reached! Snehashis sends all his love! 💖";
+          triggerRoseConfetti();
+        }
+      }, 70);
+    }
+
+    function stopHugCharge() {
+      if (hugInterval) clearInterval(hugInterval);
+    }
+
+    function updateHugUI() {
+      const bar = document.getElementById('hug-bar');
+      const txt = document.getElementById('hug-text');
+      if (bar) bar.style.width = hugCharge + '%';
+      if (txt) txt.textContent = `Hug Level: ${hugCharge}%`;
+    }
+  </script>
+
+  <script>
+    const ambientCanvas = document.getElementById('ambient-canvas');
+    const actx = ambientCanvas ? ambientCanvas.getContext('2d') : null;
+    let petals = [];
+
+    function resizeAmbientCanvas() {
+      if (!ambientCanvas) return;
+      ambientCanvas.width = window.innerWidth;
+      ambientCanvas.height = window.innerHeight;
+    }
+
+    function createPetals() {
+      petals = [];
+      const count = window.innerWidth < 768 ? 16 : 28;
+      for (let i = 0; i < count; i++) {
+        petals.push({
+          x: Math.random() * ambientCanvas.width,
+          y: Math.random() * ambientCanvas.height,
+          radius: 6 + Math.random() * 8,
+          speedY: 0.6 + Math.random() * 1.2,
+          speedX: (Math.random() - 0.5) * 0.8,
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 1.5,
+          opacity: 0.25 + Math.random() * 0.45
+        });
+      }
+    }
+
+    function renderAmbientPetals() {
+      if (!actx || !ambientCanvas) return;
+      actx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+
+      petals.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > ambientCanvas.height + 20) {
+          p.y = -20;
+          p.x = Math.random() * ambientCanvas.width;
+        }
+
+        actx.save();
+        actx.translate(p.x, p.y);
+        actx.rotate((p.rotation * Math.PI) / 180);
+        actx.fillStyle = `rgba(251, 113, 133, ${p.opacity})`;
+        
+        // Draw soft rose petal shape
+        actx.beginPath();
+        actx.ellipse(0, 0, p.radius * 0.8, p.radius * 1.3, Math.PI / 4, 0, 2 * Math.PI);
+        actx.fill();
+        actx.restore();
+      });
+
+      requestAnimationFrame(renderAmbientPetals);
+    }
+
+    // Window Load Initialization
+    window.addEventListener('load', () => {
+      resizeAmbientCanvas();
+      createPetals();
+      renderAmbientPetals();
+      initScratchCard();
+      initGameCanvas();
+    });
+
+    window.addEventListener('resize', () => {
+      resizeAmbientCanvas();
+      if (scratchCanvas) {
+        scratchCanvas.width = scratchCanvas.parentElement.getBoundingClientRect().width;
+        scratchCanvas.height = scratchCanvas.parentElement.getBoundingClientRect().height;
+      }
+      if (gameCanvas) {
+        gameCanvas.width = gameCanvas.parentElement.getBoundingClientRect().width;
+        gameCanvas.height = gameCanvas.parentElement.getBoundingClientRect().height;
+        basket.y = gameCanvas.height - 35;
+      }
+    });
+  </script>
+</body>
+</html>
